@@ -1,5 +1,5 @@
 """
-PASS
+Start web application server.
 """
 import click
 import uvicorn
@@ -12,7 +12,7 @@ from sanitize.presentation.controllers import signin, signout, status
 @click.option("-h", "--host", default="localhost", show_default=True)
 def server(port: int, host: str) -> None:
     """
-    PASS
+    Start web application server.
     """
     app = FastAPI()
     router = APIRouter(prefix="/v1")

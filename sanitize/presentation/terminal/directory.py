@@ -1,5 +1,5 @@
 """
-PASS
+Manage all rules about directories.
 """
 import sqlite3
 import click
@@ -12,14 +12,14 @@ from sanitize.domain.usecases.directory import ListDirectoriesRules
 @click.group(name="dir")
 def directory() -> None:
     """
-    PASS
+    Manage all rules about directories.
     """
 
 
 @directory.command(name="all")
 def directory_all() -> None:
     """
-    PASS
+    Get all rules defined to directories.
     """
     rules_gateway = RulesGateway(sqlite3.connect("development.db"))
     list_directories_rules = ListDirectoriesRules(rules_gateway)
@@ -36,19 +36,19 @@ def directory_all() -> None:
 @directory.command(name="create")
 def directory_create() -> None:
     """
-    PASS
+    Create a new directory rule.
     """
 
 
 @directory.command(name="update")
 def directory_update() -> None:
     """
-    PASS
+    Update a existing directory rule.
     """
 
 
 @directory.command(name="delete")
 def directory_delete() -> None:
     """
-    PASS
+    Delete a existing directory rule.
     """

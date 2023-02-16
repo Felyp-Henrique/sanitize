@@ -1,5 +1,5 @@
 """
-PASS
+Define configuration about sanitize.
 """
 import click
 
@@ -7,5 +7,5 @@ import click
 @click.command(name="config")
 def configuration():
     """
-    PASS
+    Define configuration about sanitize.
     """
