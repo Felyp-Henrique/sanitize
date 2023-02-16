@@ -2,6 +2,7 @@
 PASS
 """
 import click
+from sanitize.presentation.terminal import configuration
 from sanitize.presentation.terminal import directory
 from sanitize.presentation.terminal import server
 
@@ -13,6 +14,7 @@ def app():
     """
 
 
+app.add_command(configuration.configuration)
 app.add_command(directory.directory)
 app.add_command(server.server)
 app()
