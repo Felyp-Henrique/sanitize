@@ -13,5 +13,8 @@ setup(
     install_requires=[
         "click==8.1.3",
         "setuptools==67.2.0",
+        "rich==13.3.1",
+        "fastapi",
+        "uvicorn[standard]",
     ],
 )

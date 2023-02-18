@@ -3,14 +3,15 @@ PASS
 """
 import sqlite3
 import contextlib
-from sanitize.core.datasource import DataSourceGateway
+from sanitize.core.datasource import Persistence
 from sanitize.domain.entities.rules import Rule
 
 
-class RulesGateway(DataSourceGateway[Rule]):
+class RulesPersistence(Persistence[Rule]):
     """
     PASS
     """
+
     QUERY_ALL = """
         select
             rules.id,
@@ -62,6 +63,15 @@ class RulesGateway(DataSourceGateway[Rule]):
             id = :id
     """
 
+    QUERY_CREATE_TABLE = """
+        create table if not exists rules (
+            id int auto increment primary key,
+            type varchar(25) not null,
+            expression varchar(250) not null,
+            comments text
+        )
+    """
+
     def __init__(self, database: sqlite3.Connection) -> None:
         self.connection = database
 
@@ -78,7 +88,7 @@ class RulesGateway(DataSourceGateway[Rule]):
     def create(self, data: Rule) -> None:
         with contextlib.closing(self.connection.cursor()) as cursor:
             cursor.execute(self.QUERY_CREATE, {
-                "id": data.id,
+                "id": data.id_,
                 "type": data.type,
                 "expression": data.expression,
                 "comments": data.comments
@@ -88,7 +98,7 @@ class RulesGateway(DataSourceGateway[Rule]):
     def update(self, data: Rule) -> None:
         with contextlib.closing(self.connection.cursor()) as cursor:
             cursor.execute(self.QUERY_UPDATE, {
-                "id": data.id,
+                "id": data.id_,
                 "type": data.type,
                 "expression": data.expression,
                 "comments": data.comments
@@ -97,5 +107,16 @@ class RulesGateway(DataSourceGateway[Rule]):
 
     def delete(self, data: Rule) -> None:
         with contextlib.closing(self.connection.cursor()) as cursor:
-            cursor.execute(self.QUERY_DELETE, { "id": data.id })
+            cursor.execute(self.QUERY_DELETE, { "id": data.id_ })
         return None
+
+    @staticmethod
+    def create_table(connection: sqlite3.Connection) -> None:
+        """
+        Create table "rules"
+
+        Args:
+            connection (sqlite3.Connection): Database connection
+        """
+        with contextlib.closing(connection.cursor()) as cursor:
+            cursor.execute(RulesPersistence.QUERY_CREATE_TABLE)

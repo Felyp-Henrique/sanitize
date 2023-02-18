@@ -5,8 +5,8 @@ import sqlite3
 import click
 import rich
 from rich.table import Table
-from sanitize.datasources.database.rules import RulesGateway
-from sanitize.domain.usecases.directory import ListDirectoriesRules
+from sanitize.datasources.persistences.rules import RulesPersistence
+from sanitize.domain.usecases.rules import RulesListUseCase
 
 
 @click.group(name="dir")
@@ -21,14 +21,14 @@ def directory_all() -> None:
     """
     Get all rules defined to directories.
     """
-    rules_gateway = RulesGateway(sqlite3.connect("development.db"))
-    list_directories_rules = ListDirectoriesRules(rules_gateway)
+    persistence_rules = RulesPersistence(sqlite3.connect("development.db"))
+    usecase_rules_list = RulesListUseCase(persistence_rules)
     table = Table(box=None)
     table.add_column()
     table.add_column(no_wrap=True)
     table.add_column()
-    for rule in list_directories_rules.execute():
-        table.add_row(rule.id, rule.expression, rule.comments)
+    for rule in usecase_rules_list.execute():
+        table.add_row(rule.id_, rule.expression, rule.comments)
     if len(table.rows) > 0:
         rich.print(table)
 

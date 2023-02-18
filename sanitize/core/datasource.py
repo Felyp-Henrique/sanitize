@@ -1,5 +1,5 @@
 """
-PASS
+Bases to create interaction with data in external data sources.
 """
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
@@ -8,37 +8,37 @@ from typing import TypeVar, Generic
 T = TypeVar("T")
 
 
-class DataSourceGateway(Generic[T], ABC):
+class Persistence(Generic[T], ABC):
     """
-    PASS
+    Class base to persistence in database.
     """
 
     @abstractmethod
     def all(self) -> list[T]:
         """
-        PASS
+        Get all registers.
         """
 
     @abstractmethod
     def find(self, *args, **kwargs) -> T:
         """
-        PASS
+        Find only one register in database.
         """
 
     @abstractmethod
     def create(self, data: T) -> any:
         """
-        PASS
+        Create a new register in database.
         """
 
     @abstractmethod
     def update(self, data: T) -> any:
         """
-        PASS
+        Update a existing register in database.
         """
 
     @abstractmethod
     def delete(self, data: T) -> any:
         """
-        PASS
+        Delete a existing register in database.
         """

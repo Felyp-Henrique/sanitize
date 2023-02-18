@@ -1,0 +1,1 @@
+from tests.domain.usecases.test_rules import *

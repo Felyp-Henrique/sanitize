@@ -24,14 +24,14 @@ class Rule(ToDict):
     """
 
     def __init__(self, id_ = 0, type_ = None, expression = None, comments = None) -> None:
-        self.id =  id_
+        self.id_ =  id_
         self.type = type_
         self.expression =  expression
         self.comments =  comments
 
     def to_dict(self) -> dict[str, any]:
         return {
-            "id": self.id,
+            "id": self.id_,
             "type": self.type,
             "expression": self.expression,
             "comments": self.comments,
