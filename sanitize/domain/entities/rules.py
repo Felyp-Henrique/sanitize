@@ -23,16 +23,16 @@ class Rule(ToDict):
     PASS
     """
 
-    def __init__(self, id_ = 0, type_ = None, expression = None, comments = None) -> None:
+    def __init__(self, id_ = 0, type_ = None, expression = None, comment = None) -> None:
         self.id_ =  id_
         self.type = type_
         self.expression =  expression
-        self.comments =  comments
+        self.comment =  comment
 
     def to_dict(self) -> dict[str, any]:
         return {
             "id": self.id_,
             "type": self.type,
             "expression": self.expression,
-            "comments": self.comments,
+            "comments": self.comment,
         }

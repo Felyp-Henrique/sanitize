@@ -6,7 +6,7 @@ import click
 import rich
 from rich.table import Table
 from sanitize.datasources.persistences.rules import RulesPersistence
-from sanitize.domain.usecases.rules import RulesListUseCase
+from sanitize.domain.usecases.rules import RulesListUseCase, RulesCreateUseCase
 
 
 @click.group(name="dir")
@@ -23,21 +23,23 @@ def directory_all() -> None:
     """
     persistence_rules = RulesPersistence(sqlite3.connect("development.db"))
     usecase_rules_list = RulesListUseCase(persistence_rules)
-    table = Table(box=None)
-    table.add_column()
-    table.add_column(no_wrap=True)
-    table.add_column()
+    table = Table.grid(padding=(0, 1, 0, 0))
+    table.add_row("[bold]ID", "[bold]EXPRESSION", "[bold]COMMENT")
     for rule in usecase_rules_list.execute():
-        table.add_row(rule.id_, rule.expression, rule.comments)
-    if len(table.rows) > 0:
-        rich.print(table)
+        table.add_row(f"{ rule.id_ }", f"{ rule.expression }", f"{ rule.comment or '--' }")
+    rich.print(table)
 
 
 @directory.command(name="create")
-def directory_create() -> None:
+@click.option("-c", "--comment", type=str, default=None, help="Add a comment in rule.")
+@click.argument("expression", type=str, default=None)
+def directory_create(comment: str, expression: str) -> None:
     """
     Create a new directory rule.
     """
+    persistence_rules = RulesPersistence(sqlite3.connect("development.db"))
+    usecase_rules_create = RulesCreateUseCase(persistence_rules)
+    usecase_rules_create.execute(comment=comment, expression=expression)
 
 
 @directory.command(name="update")

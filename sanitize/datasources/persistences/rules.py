@@ -14,35 +14,33 @@ class RulesPersistence(Persistence[Rule]):
 
     QUERY_ALL = """
         select
-            rules.id,
-            rules.type,
+            rules.id as id_,
+            rules.type as type_,
             rules.expression,
-            rules.comments
+            rules.comment
         from
             rules
     """
 
     QUERY_FIND = """
         select
-            rules.id,
-            rules.type,
+            rules.id as id_,
+            rules.type as type_,
             rules.expression,
-            rules.comments
+            rules.comment
         from
             rules
     """
 
     QUERY_CREATE = """
         insert into rules (
-            id,
             type,
             expression,
-            comments
+            comment
         ) values (
-            :id,
             :type,
             :expression,
-            :comments
+            :comment
         )
     """
 
@@ -51,7 +49,7 @@ class RulesPersistence(Persistence[Rule]):
             id = :id,
             type = :type,
             expression = :expression,
-            comments = :comments
+            comment = :comment
         where
             id = :id
     """
@@ -65,10 +63,10 @@ class RulesPersistence(Persistence[Rule]):
 
     QUERY_CREATE_TABLE = """
         create table if not exists rules (
-            id int auto increment primary key,
+            id integer primary key autoincrement,
             type varchar(25) not null,
             expression varchar(250) not null,
-            comments text
+            comment text
         )
     """
 
@@ -83,16 +81,16 @@ class RulesPersistence(Persistence[Rule]):
     def find(self, *args, **kwargs) -> Rule | None:
         with contextlib.closing(self.connection.cursor()) as cursor:
             cursor.execute(self.QUERY_FIND)
-            return Rule(*cursor.fetchone()) or None
+            return Rule() or None
 
     def create(self, data: Rule) -> None:
         with contextlib.closing(self.connection.cursor()) as cursor:
             cursor.execute(self.QUERY_CREATE, {
-                "id": data.id_,
-                "type": data.type,
+                "type": data.type.value,
                 "expression": data.expression,
-                "comments": data.comments
+                "comment": data.comment
             })
+            self.connection.commit()
         return None
 
     def update(self, data: Rule) -> None:
@@ -101,13 +99,15 @@ class RulesPersistence(Persistence[Rule]):
                 "id": data.id_,
                 "type": data.type,
                 "expression": data.expression,
-                "comments": data.comments
+                "comment": data.comment
             })
+            self.connection.commit()
         return None
 
     def delete(self, data: Rule) -> None:
         with contextlib.closing(self.connection.cursor()) as cursor:
             cursor.execute(self.QUERY_DELETE, { "id": data.id_ })
+            self.connection.commit()
         return None
 
     @staticmethod

@@ -27,7 +27,7 @@ class TestRulesListUseCase(unittest.TestCase):
             self.assertEqual(rule_result.id_, rule_expected.id_)
             self.assertEqual(rule_result.type, rule_expected.type)
             self.assertEqual(rule_result.expression, rule_expected.expression)
-            self.assertEqual(rule_result.comments, rule_expected.comments)
+            self.assertEqual(rule_result.comment, rule_expected.comment)
 
     @staticmethod
     def get_rule() -> Rule:
@@ -39,5 +39,5 @@ class TestRulesListUseCase(unittest.TestCase):
             id_=faker.random.randint(1, 999),
             type_=faker.random.choice([RuleType.DIRECTORY]),
             expression=faker.file_path(depth=3),
-            comments=faker.sentence(nb_words=10),
+            comment=faker.sentence(nb_words=10),
         )
